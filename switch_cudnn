@@ -1,0 +1,84 @@
+#! /bin/bash
+
+# matlab matconvnet uses the cudnn-4.0.4, its version is 7.0
+# tensorflow uses the cudnn-6.5.48
+# caffe uses cudnn V3, so cudnn-4.0.4?
+
+read -p "1 cudnn-4.0.4; 2 cudnn-6.5.48 ?" choice
+
+
+cd /usr/local/cuda/include
+
+rm cudnn.h
+if [ "$choice" = "2" ]
+then
+  ln -s cudnn.h.6.5.48 cudnn.h
+else
+  ln -s cudnn.h.4.0.4 cudnn.h
+fi
+
+cd /usr/local/cuda/lib64
+rm libcudnn.so
+rm libcudnn_static.a
+
+if [ "$choice" = "2" ]
+then
+  ln -s libcudnn.so.6.5.4 libcudnn.so
+  ln -s libcudnn_static.a.6.5.48 libcudnn_static.a
+else
+  ln -s libcudnn.so.4.0.4 libcudnn.so
+  ln -s libcudnn_static.a.4.0.4 libcudnn_static.a
+fi
+
+
+# mv cudnn.h cudnn.h.6.5.48
+# mv libcudnn.so libcudnn.so.6.5.4
+# mv libcudnn_static.a libcudnn_static.a.6.5.48
+
+# mv cudnn.h cudnn.h.4.0.4
+# mv libcudnn.so libcudnn.so.4.0.4
+# mv libcudnn_static.a libcudnn_static.a.4.0.4
+
+
+
+#libcublas.so.7.5      libcurand.so.7.5	     libnpps.so.7.5
+#libcublas.so.7.5.18   libcurand.so.7.5.18    libnpps.so.7.5.18
+#libcudart.so.7.5      libcusolver.so.7.5     libnvblas.so.7.5
+#libcudart.so.7.5.18   libcusolver.so.7.5.18  libnvblas.so.7.5.18
+#libcufft.so.7.5       libcusparse.so.7.5     libnvrtc-builtins.so.7.5
+#libcufft.so.7.5.18    libcusparse.so.7.5.18  libnvrtc-builtins.so.7.5.18
+#libcufftw.so.7.5      libnppc.so.7.5	     libnvrtc.so.7.5
+#libcufftw.so.7.5.18   libnppc.so.7.5.18      libnvrtc.so.7.5.17
+#libcuinj64.so.7.5     libnppi.so.7.5
+#libcuinj64.so.7.5.18  libnppi.so.7.5.18
+
+#sudo ln -s libcublas.so.7.5 libcublas.so.7.0
+#sudo ln -s libcurand.so.7.5 libcurand.so.7.0
+#sudo ln -s libnpps.so.7.5 libnpps.so.7.0
+#sudo ln -s libcudart.so.7.5 libcudart.so.7.0
+#sudo ln -s libcusolver.so.7.5 libcusolver.so.7.0
+#sudo ln -s libnvblas.so.7.5 libnvblas.so.7.0
+#sudo ln -s libcufft.so.7.5 libcufft.so.7.0
+#sudo ln -s libcusparse.so.7.5 libcusparse.so.7.0
+#sudo ln -s libnvrtc-builtins.so.7.5 libnvrtc-builtins.so.7.0
+#sudo ln -s libcufftw.so.7.5 libcufftw.so.7.0
+#sudo ln -s libnppc.so.7.5 libnppc.so.7.0
+#sudo ln -s libnvrtc.so.7.5 libnvrtc.so.7.0
+#sudo ln -s libcuinj64.so.7.5 libcuinj64.so.7.0
+#sudo ln -s libnppi.so.7.5 libnppi.so.7.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
