@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50
+# update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100
+# update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 50
+# update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 100
+# 
+
+update-alternatives --config gcc
+update-alternatives --config g++
+
+# update-alternatives --config cc
+# update-alternatives --config cpp
+# update-alternatives --config c++
+
+
