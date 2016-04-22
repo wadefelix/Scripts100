@@ -40,17 +40,11 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 $page = curl_exec($ch);
 curl_close($ch);
-
-  $pattern = '@<a\shref="(http://k.youku.com/player/.*)"\starget@i';
+  $pattern = '@<script type="text/javascript">var showclip = 1;var clipurl = "(http://[^"]*)";var cliptitle = "([^"]*)";</script>@i';
   //$pattern = iconv('UTF-8','GB2312',$pattern);
   preg_match($pattern, $page , $matches);
   $dlurl = $matches[1];
-  
-  /// -----------
-  //  <script type="text/javascript">document.title = "033 我心爱的小马车[高清版]" + " - 优酷网视频解析 - FLVCD硕鼠官网|FLV下载";</script>
-  $titlepattern = '@<script type="text/javascript">document.title = "([^"]+)" \+ "[^"]*";</script>@i';
-  preg_match($titlepattern, $page , $matches);
-  $title = $matches[1];
+  $title = $matches[2];
 ?>
 <div>
 <p>title: <?php echo $title;?></p>
