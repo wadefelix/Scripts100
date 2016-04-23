@@ -4,6 +4,35 @@
   <meta http-equiv="content-type" content="text/html; charset=gb2312">
   <meta name="generator" content="PSPad editor, www.pspad.com">
   <title>视频下载</title>
+<script type="text/javascript">
+
+  function addtask()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    //alert(xmlhttp.responseText);
+    document.getElementById('result').innerHTML= "任务添加结果:"+xmlhttp.responseText;
+    }
+  }
+var urlpostcont = document.getElementById("addtaskbtn").getAttribute("data-cont");
+xmlhttp.open("post","http://192.168.1.4:6800/jsonrpc",true);
+xmlhttp.setRequestHeader("Content-type","application/json");
+xmlhttp.setRequestHeader("Accept-Encoding","deflate");
+xmlhttp.setRequestHeader("Accept","application/json");
+xmlhttp.send(urlpostcont);
+}
+</script>
   </head>
   <body>
 
@@ -18,8 +47,8 @@
 // 使用flvcd.com的服务解析视频地址，最好能直接发送给aria下载
 
 if (isset($_GET['kw'])) {
-  $flvcdurl = "http://www.flvcd.com/parse.php?kw=".urlencode($_GET['kw'])."&flag=one&format=high";
-  echo '<p>'.$flvcdurl.'</p>';
+  $flvcdurl = "http://www.flvcd.com/parse.php?kw=".urlencode($_GET['kw'])."&flag=one&format=high"; // normal high super real
+  echo '<p><a href="'.$flvcdurl.'">硕鼠网站解析页面</a></p>';
 
         $headers = array( 
             "Accept: text/html, application/xhtml+xml, image/jxr, */*",
@@ -45,52 +74,18 @@ curl_close($ch);
   preg_match($pattern, $page , $matches);
   $dlurl = $matches[1];
   $title = $matches[2];
+  $jsonreq = Array('jsonrpc'=>'2.0',
+                 'id'=>'qwer',
+                  'method'=>'aria2.addUri',
+                  'params'=> array( array($dlurl),Array("out"=> "".iconv('GB2312','UTF-8',$title))));
+  $jsonreqstr = json_encode($jsonreq);
 ?>
 <div>
 <p>title: <?php echo $title;?></p>
-<p>下载地址: </p>
-<textarea rows="10" cols="80">
-<?php echo $dlurl?>
-</textarea>
-</div>
+<p><input id="addtaskbtn" type="button" class="tagbtn" value="添加下载任务到aria2" onclick="addtask()" data-cont='<?php echo $jsonreqstr;?>' /></p>
+<p id="result"></p>
 <?php
-
-$jsonreq = Array('jsonrpc'=>'2.0',
-                 'id'=>'qwer',
-                  'method'=>'aria2.addUri',
-                  'params'=> array( array($dlurl),Array("out"=> "".iconv('GB2312','UTF-8',$title).".mp4")));
-$jsonreqstr = json_encode($jsonreq);
-echo $jsonreqstr;
-
-
-$headers = array( 
-            "Content-Type: application/json",
-            "Accept-Encoding: deflate",// gzip
-            "Accept: application/json"
-        );
-
-$ch = curl_init();
-
-curl_setopt($ch, CURLOPT_URL, "http://127.0.0.1:6800/jsonrpc"); 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
-
-curl_setopt($ch, CURLOPT_POST, 1);//设置为POST方式 
-curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonreqstr);//POST数据 
-
-$page = curl_exec($ch);
-curl_close($ch);
-?>
-<p>任务添加结果</p>
-<?php
-echo $page;
-
 }
-
-
-
-
 ?>
   </body>
 </html>
