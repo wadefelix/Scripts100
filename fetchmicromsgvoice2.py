@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding:utf-8 -*-
 # ftp fetch MicroMsg amr files to local
 
 
@@ -6,7 +8,7 @@ import os
 import datetime
 import time
 
-localdir = r'D:\renxiaoan\micromsg'
+localdir = r'~/micromsg'
 
 ftp=FTP()
 ftp.connect('192.168.1.105','2121')
@@ -33,11 +35,12 @@ ftp.dir(get_file_list)
 
 # -rw-r--r-- 1 owner group       668032 Jan 14 16:19 1452759557133_0f13343d.jpg
 # 04261951msg_121951042616ea710c10030103.amr
-# 秒小时分钟月日两位年
+# 脙毛脨隆脢卤路脰脰脫脭脗脠脮脕陆脦禄脛锚
 
 
 for voicedirname in voicedirnames:
-    if not os.path.exists(os.path.join(localdir, voicedirname )): os.mkdir(os.path.join(localdir, voicedirname ))
+    #if not os.path.exists(os.path.join(localdir, voicedirname )): 
+    os.mkdir(os.path.join(localdir, voicedirname ))
     ftp.cwd(voicedirname)
     for dirname in ftp.nlst():
         if dirname == 'voice2':
