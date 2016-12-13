@@ -15,6 +15,26 @@ enctype="multipart/form-data">
 <label for="file">Filename:</label>
 <input type="file" name="upfile" id="upfile" /> 
 <br />
+<select name="subdir">
+<?php
+    $dir = '.';
+    $d = dir($dir);
+    while (false !== ($entry = $d->read())) {
+       if($entry!='.' && $entry!='..') {
+           $subdir = $dir.'/'.$entry;
+           if(is_dir($subdir)) {
+               if($entry == 'uploads') {
+                   echo "<option value=\"$entry\" selected=\"selected\">$entry</option>";
+               } else {
+                   echo "<option value=\"$entry\">$entry</option>";
+               }
+           }
+       }
+   }
+   $d->close();
+?>
+</select>
+<br />
 <input type="submit" name="submit" value="Submit" />
 </form>
 <?php
@@ -73,7 +93,8 @@ try {
     // On this example, obtain safe unique name from its binary data.
     if (!move_uploaded_file(
         $_FILES['upfile']['tmp_name'],
-        sprintf('./uploads/%s',
+        sprintf('./%s/%s',
+            isset($_POST['subdir'])?$_POST['subdir']:'uploads',
             $_FILES['upfile']['name']
             //    sha1_file($_FILES['upfile']['tmp_name']),
             //    $ext
