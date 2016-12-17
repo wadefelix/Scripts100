@@ -16,30 +16,36 @@ Opt("WinTitleMatchMode", 2) ;1=start, 2=subStr, 3=exact, 4=advanced, -1 to -4=No
 #include <ScreenCapture.au3>
 
 DIM $outputdir = @ScriptDir & "\captured\"
+If Not FileExists($outputdir) Then
+   DirCreate($outputdir)
+EndIf
 
-; 文档共246页，其中的44-46三页页面横版
-Dim $capturePages = 246
+; 文档共xxx页
+Dim $capturePages = 3
 
-Dim $WindowTitle = "Adobe Acrobat Reader"
+Dim $WindowTitle = "Foxit Reader"
 
 
 WinWaitActive($WindowTitle)
 
-;Sleep(2000)
-;Send("^L") ; 全屏
-;Send("^0") ; ctrl+0 适合页面
+Sleep(2000)
+; Send("^L") ; 全屏
+Send("{F11}") ; 全屏
+Send("^0") ; ctrl+0 适合页面
 ; 旋转，用系统的旋转吧
-; Send("+^-") ; 旋转
-Sleep(30000) ; 等待，若之前发送的快捷键没有生效，此时的较长等待阶段可以手动设置
+;ddfSend("+^-") ; 旋转
+Sleep(1000) ; 等待，若之前发送的快捷键没有生效，此时的较长等待阶段可以手动设置
 
-For $ind = $capturePages
+For $ind = 1 To $capturePages
     WinWaitActive($WindowTitle)
     ; Capture full screen
     ; _ScreenCapture_Capture($outputdir & "\CapturedImage" &  StringFormat("%03i", $ind) &".jpg")
 	; 竖屏截页面 surface pro 3
     ;_ScreenCapture_Capture($outputdir & "\CapturedImage" &  StringFormat("%03i", $ind) &".jpg", 0, 148, -1, 1862+148)
 	; 横屏截横向页面 surface pro 3
-    _ScreenCapture_Capture($outputdir & "\CapturedImage" &  StringFormat("%03i", $ind) &".jpg", 148, 0, 1862+148 , -1)
+    _ScreenCapture_Capture($outputdir & "\" &  StringFormat("%03i", $ind) &".jpg", 0, 109, -1 , 1330, False)
 	Send("{PGDN}") ; pade down
     Sleep(500)
 Next
+
+Send("{ESC}") ; esc全屏
