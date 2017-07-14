@@ -21,7 +21,7 @@ do_start () {
     [ -z "$old" ] && HOSTNAME="$(hostname)"
     
     # appending MAC
-    NIC=$(ls /sys/class/net/ | awk '{if($1 ~! /docker[0-9]*/ && $1 ~! /^lo$/) {print $1;exit 0;}}')
+    NIC=$(ls /sys/class/net/ | awk '{if($1 !~ /docker[0-9]*/ && $1 !~ /^lo$/) {print $1;exit 0;}}')
     [ -f /sys/class/net/$NIC/address ] && new="ubuntu-$(cat /sys/class/net/$NIC/address | sed 's/://g')"
     [ -z "$new" ] && new=$(tr -dc 'A-Z0-9' < /dev/urandom | head -c12)
 
