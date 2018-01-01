@@ -20,7 +20,7 @@ SERVER="example.com"
 USERNAME="username"
 SSHPORT=22
 SOCKS5PORT=9999
-ARGS=" -gqTnN -D ${SOCKS5PORT} -p ${SSHPORT} -i ${KEYFILE} ${USERNAME}@${SERVER}"
+ARGS=" -gqTnN -D ${SOCKS5PORT} -p ${SSHPORT} -i ${KEYFILE} -o ServerAliveInterval=240 ${USERNAME}@${SERVER}"
 
 test -f $EXEFILE || exit 0
 
@@ -36,7 +36,7 @@ stop)   echo "Stopping $NAME"
         ;;
 restart|reload|force-reload)
         echo "Restarting $NAME"
-        start-stop-daemon -K -R 5 -q -p $PIDFILE
+        start-stop-daemon -K -q -p $PIDFILE
         rm $PIDFILE
         start-stop-daemon -S -q -b -m -p $PIDFILE -c $USER -a $EXEFILE -- $ARGS
         echo $?
