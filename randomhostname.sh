@@ -25,7 +25,7 @@ do_start () {
     # NIC=$(lshw -class network | grep 'logical name:' | awk -F: '{print $2}')
     # [ -f /sys/class/net/$NIC/address ] && new="ubuntu-$(cat /sys/class/net/$NIC/address | sed 's/://g')"
     # MAC=$(lshw -class network | grep 'serial:' | awk '{print $2}' | sed 's/://g')
-    new="ubuntu-$(lshw -class network | grep 'serial:' | awk '{print $2}' | sed 's/://g')"
+    new="ubuntu-$(lshw -class network | grep 'serial:' | awk '{print $2;exit;}' | sed 's/://g')"
     [ -z "$new" ] && new=$(tr -dc 'A-Z0-9' < /dev/urandom | head -c12)
 
     sed -i "s/$old/$new/g" /etc/hosts
