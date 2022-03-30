@@ -1,0 +1,10 @@
+Package: hello-deb
+Version: 1.0
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Installed-Size: 1024
+Maintainer: renwei
+Description: Print hello-deb on the screen
+Depends: python3
